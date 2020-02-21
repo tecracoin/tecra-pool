@@ -1,0 +1,5 @@
+#clion
+.idea
+#qt creator files
+qt-*
+*.log
