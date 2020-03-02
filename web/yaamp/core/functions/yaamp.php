@@ -471,6 +471,9 @@ function yaamp_user_rate($userid, $algo=null)
 	$delta1 = controller()->memcache->get_database_scalar("yaamp_pool_rate-$userid-$algo",
 	"SELECT (UNIX_TIMESTAMP()-time) FROM shares WHERE valid AND time>(UNIX_TIMESTAMP()-$interval)  AND userid=$userid AND algo=:algo ORDER BY time ASC LIMIT 1", array(':algo'=>$algo));
 
+	if (!$delta1)
+		$delta1 = $interval;
+	
 	$rate = controller()->memcache->get_database_scalar("yaamp_user_rate-$userid-$algo",
 		"SELECT (sum(difficulty) * $target / $delta1  / 1000) FROM shares WHERE valid AND time>$delay AND userid=$userid AND algo=:algo", array(':algo'=>$algo));
 
